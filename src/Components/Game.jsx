@@ -21,45 +21,46 @@ class Game extends Component{
         this.squaresWinner = [];
     }
 
-    handleClick(i){
+    handleClick = (i) => {
         if(this.haveWinner){
             return;
         }
 
-        const temp = this.state.squares.slice();
+        const { squares, xIsNext, content, history, stepNumber } = this.state;
+        const temp = squares.slice();
         
         if (temp[i] != null){
             return;
         }
 
         this.recentlyChecked = i;
-        temp[i] = this.state.xIsNext? 'x' : 'o';
+        temp[i] = xIsNext? 'x' : 'o';
         let tempHistory = [];
 
-        if (this.state.content === 'Increment')
+        if (content === 'Increment')
         {
-            tempHistory = this.state.history.slice(0, this.state.stepNumber);
+            tempHistory = history.slice(0, stepNumber);
             tempHistory.push({
                 value: temp[i],
                 clickIndex: i,
-                stepNumber: this.state.stepNumber
+                stepNumber
             });
         }else{
-            tempHistory = this.state.history.slice(this.state.history.length - this.state.stepNumber);
+            tempHistory = history.slice(history.length - stepNumber);
             tempHistory.unshift({
                 value: temp[i],
                 clickIndex: i,
-                stepNumber: this.state.stepNumber
+                stepNumber
             });
         }
         
         this.setState({
             squares: temp,
-            xIsNext: !this.state.xIsNext,
+            xIsNext: !xIsNext,
             history: tempHistory,
-            stepNumber: this.state.stepNumber + 1
+            stepNumber: stepNumber + 1
         }, () => {
-            let haveWinner = this.calculateWinner();
+            const haveWinner = this.calculateWinner();
 
             if (haveWinner){
                 this.setState({
@@ -70,106 +71,176 @@ class Game extends Component{
         });
     }
 
+    createNewGame = () => {
+        this.squaresWinner = [];
+        this.haveWinner = false;
+        this.recentlyChecked = 0;
+        this.setState({
+            squares: Array(400).fill(null),
+            xIsNext: true,
+            stepNumber: 0,
+            history: [],
+            squaresWinner: [],
+            haveWinner: false
+        });
+    }
+
+    handleClickBtnMove = (index) => {
+        const tempSquares = Array(400).fill(null);
+        const { history, content } = this.state;
+        let tempSquaresWinner = [];
+        
+        if (content === 'Increment'){
+            for (let i = 0; i < index + 1; i += 1){
+                tempSquares[history[i].clickIndex] = history[i].value;
+            }
+
+            if (index === history.length - 1){
+                tempSquaresWinner = this.squaresWinner;
+            }
+
+            this.setState({
+                squares: tempSquares,
+                stepNumber: index + 1,
+                xIsNext: history[index].value !== 'x',
+                squaresWinner: tempSquaresWinner
+            });
+        }else{
+            const len = history.length;
+            for (let i = 0; i < index + 1; i += 1){
+                tempSquares[history[len - i - 1].clickIndex] = history[len - i - 1].value;
+            }
+            
+            if (history.length - index - 1 === 0){
+                tempSquaresWinner = this.squaresWinner;
+            }
+
+            this.setState({
+                squares: tempSquares,
+                stepNumber: index + 1,
+                xIsNext: history[len - index - 1].value !== 'x',
+                squaresWinner: tempSquaresWinner
+            });
+        }
+    }
+
+    sort = () => {
+        const { content, history } = this.state;
+
+        if (content === 'Increment'){
+            this.setState({
+                history: history.reverse(),
+                content: 'Decrement'
+            });
+        }else{
+            this.setState({
+                history: history.reverse(),
+                content: 'Increment'
+            });
+        }
+    }
+
     // Kiểm tra hàng ngang
     checkRow(){
-        var temp = 0;
-        var head1 = false;
-        var head2 = false;
-        var i = this.recentlyChecked;
-        var currentRow = Math.floor(i / 20);
-        var nextPlayer = this.state.xIsNext ? 'x' : 'o';
-        var winner = [];
+        let temp = 0;
+        let head1 = false;
+        let head2 = false;
+        let i = this.recentlyChecked;
+        const currentRow = Math.floor(i / 20);
+        const { xIsNext, squares } = this.state;
+        const nextPlayer = xIsNext ? 'x' : 'o';
+        const winner = [];
 
         while (temp < 5){
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head1 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (Math.floor((i - 1) / 20) !== currentRow){
                 head1 = true;
                 break;
             }
 
-            if ((temp === 5) && (this.state.squares[i - 1] === nextPlayer)){
+            if ((temp === 5) && (squares[i - 1] === nextPlayer)){
                 head1 = true;
             }
 
             winner.push(i);
-            --i;
+            i -= 1;
         }
 
         i = this.recentlyChecked;
         winner.shift();
 
         while (temp < 6){
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head2 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (Math.floor((i + 1) / 20) !== currentRow){
                 head2 = true;
                 break;
             }
 
-            if ((temp === 6) && (this.state.squares[i + 1] === nextPlayer)){
+            if ((temp === 6) && (squares[i + 1] === nextPlayer)){
                 head2 = true;
             }
 
             winner.push(i);
-            ++i;
+            i += 1;
         }
 
         if ((temp === 6) && !((head1 === true) && (head2 === true))){
             this.squaresWinner = winner;
             return true;
         }
-        else{
-            return false;
-        }
+        
+        return false;
     }
 
     // Kiểm tra hàng dọc
     checkColumn(){
-        var temp = 0;
-        var head1 = false;
-        var head2 = false;
-        var i = this.recentlyChecked;
-        var nextPlayer = this.state.xIsNext ? 'x' : 'o';
-        var winner = [];
+        let temp = 0;
+        let head1 = false;
+        let head2 = false;
+        let i = this.recentlyChecked;
+        const {xIsNext, squares} = this.state;
+        const  nextPlayer = xIsNext ? 'x' : 'o';
+        const winner = [];
 
         while (temp < 5){
             
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head1 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (i - 20 < 0){
                 head1 = true;
                 break;
             }
 
-            if ((temp === 5) && (this.state.squares[i - 20] === nextPlayer)){
+            if ((temp === 5) && (squares[i - 20] === nextPlayer)){
                 head1 = true;
             }
 
@@ -182,23 +253,23 @@ class Game extends Component{
 
         while (temp < 6){
             
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head2 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (i + 20 > 399){
                 head2 = true;
                 break;
             }
 
-            if ((temp === 6) && (this.state.squares[i + 20] === nextPlayer)){
+            if ((temp === 6) && (squares[i + 20] === nextPlayer)){
                 head2 = true;
             }
 
@@ -210,39 +281,39 @@ class Game extends Component{
             this.squaresWinner = winner;
             return true;
         }
-        else{
-            return false;
-        }
+            
+        return false;
     }
 
     // Kiểm tra đường chéo trái sang phải
     checkSlash(){
-        var temp = 0;
-        var head1 = false;
-        var head2 = false;
-        var i = this.recentlyChecked;
-        var nextPlayer = this.state.xIsNext ? 'x' : 'o';
-        var winner = [];
+        let temp = 0;
+        let head1 = false;
+        let head2 = false;
+        let i = this.recentlyChecked;
+        const {xIsNext, squares} = this.state;
+        const nextPlayer = xIsNext ? 'x' : 'o';
+        const winner = [];
 
         while (temp < 5){
             
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head1 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (i - 21 < 0){
                 head1 = true;
                 break;
             }
 
-            if ((temp === 5) && (this.state.squares[i - 21] === nextPlayer)){
+            if ((temp === 5) && (squares[i - 21] === nextPlayer)){
                 head1 = true;
             }
 
@@ -255,23 +326,23 @@ class Game extends Component{
 
         while (temp < 6){
             
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head2 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (i + 21 > 399){
                 head2 = true;
                 break;
             }
 
-            if ((temp === 6) && (this.state.squares[i + 21] === nextPlayer)){
+            if ((temp === 6) && (squares[i + 21] === nextPlayer)){
                 head2 = true;
             }
 
@@ -283,39 +354,39 @@ class Game extends Component{
             this.squaresWinner = winner;
             return true;
         }
-        else{
-            return false;
-        }
+
+        return false;
     }
 
     // Kiểm tra đường chéo phải sang trái
     checkBackSlash(){
-        var temp = 0;
-        var head1 = false;
-        var head2 = false;
-        var i = this.recentlyChecked;
-        var nextPlayer = this.state.xIsNext ? 'x' : 'o';
-        var winner = [];
+        let temp = 0;
+        let head1 = false;
+        let head2 = false;
+        let i = this.recentlyChecked;
+        const {xIsNext, squares} = this.state;
+        const nextPlayer = xIsNext ? 'x' : 'o';
+        const winner = [];
 
         while (temp < 5){
             
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head1 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (i - 19 < 0){
                 head1 = true;
                 break;
             }
 
-            if ((temp === 5) && (this.state.squares[i - 19] === nextPlayer)){
+            if ((temp === 5) && (squares[i - 19] === nextPlayer)){
                 head1 = true;
             }
 
@@ -328,23 +399,23 @@ class Game extends Component{
 
         while (temp < 6){
             
-            if (this.state.squares[i] === null){
+            if (squares[i] === null){
                 break;
             }
 
-            if (this.state.squares[i] === nextPlayer){
+            if (squares[i] === nextPlayer){
                 head2 = true;
                 break;
             }
 
-            ++temp;
+            temp += 1;
 
             if (i + 19 > 399){
                 head2 = true;
                 break;
             }
 
-            if ((temp === 6) && (this.state.squares[i + 19] === nextPlayer)){
+            if ((temp === 6) && (squares[i + 19] === nextPlayer)){
                 head2 = true;
             }
 
@@ -356,9 +427,8 @@ class Game extends Component{
             this.squaresWinner = winner;
             return true;
         }
-        else{
-            return false;
-        }
+            
+        return false;
     }
 
     // Kiểm tra xem người chơi hiện tại có thắng không
@@ -387,93 +457,27 @@ class Game extends Component{
         return false;
     }
 
-    createNewGame(){
-        this.squaresWinner = [];
-        this.haveWinner = false;
-        this.recentlyChecked = 0;
-        this.setState({
-            squares: Array(400).fill(null),
-            xIsNext: true,
-            stepNumber: 0,
-            history: [],
-            squaresWinner: [],
-            haveWinner: false
-        });
-    }
-
-    handleClickBtnMove(index){
-        var tempSquares = Array(400).fill(null);
-        var { history, content } = this.state;
-        var tempSquaresWinner = [];
-        
-        if (content === 'Increment'){
-            for (let i = 0; i < index + 1; ++i){
-                tempSquares[history[i].clickIndex] = history[i].value;
-            }
-
-            if (index === history.length - 1){
-                tempSquaresWinner = this.squaresWinner;
-            }
-
-            this.setState({
-                squares: tempSquares,
-                stepNumber: index + 1,
-                xIsNext: history[index].value === 'x' ? false : true,
-                squaresWinner: tempSquaresWinner
-            });
-        }else{
-            var len = history.length;
-            for (let i = 0; i < index + 1; ++i){
-                tempSquares[history[len - i - 1].clickIndex] = history[len - i - 1].value;
-            }
-            
-            if (history.length - index - 1 === 0){
-                tempSquaresWinner = this.squaresWinner;
-            }
-
-            this.setState({
-                squares: tempSquares,
-                stepNumber: index + 1,
-                xIsNext: history[len - index - 1].value === 'x' ? false : true,
-                squaresWinner: tempSquaresWinner
-            });
-        }
-    }
-
-    sort(){
-        if (this.state.content === 'Increment'){
-            this.setState({
-                history: this.state.history.reverse(),
-                content: 'Decrement'
-            });
-        }else{
-            this.setState({
-                history: this.state.history.reverse(),
-                content: 'Increment'
-            });
-        }
-    }
-
     render(){
         const cells = [...Array(400).keys()];
+        const { squares, squaresWinner, xIsNext, haveWinner, history, stepNumber, content } = this.state;
+
         return(
             <div className="game">
                 <div className="game-board">
                     <Board cells={cells} 
-                            squares={this.state.squares}
-                            squaresWinner={this.state.squaresWinner}
-                            onClick={this.handleClick.bind(this)}>
-                    </Board>
+                            squares={squares}
+                            squaresWinner={squaresWinner}
+                            onClick={this.handleClick}/>
                 </div>
                 <div className="game-info">
-                    <Status xIsNext={this.state.xIsNext}
-                            haveWinner={this.state.haveWinner}/>
-                    <Moves createNewGame={this.createNewGame.bind(this)}
-                            history={this.state.history}
-                            stepNumber={this.state.stepNumber}
-                            onClick={this.handleClickBtnMove.bind(this)}
-                            content={this.state.content}
-                            sort={this.sort.bind(this)} />
+                    <Status xIsNext={xIsNext}
+                            haveWinner={haveWinner}/>
+                    <Moves createNewGame={this.createNewGame}
+                            history={history}
+                            stepNumber={stepNumber}
+                            onClick={this.handleClickBtnMove}
+                            content={content}
+                            sort={this.sort} />
                 </div>
             </div>
         );

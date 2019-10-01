@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import Square from './Square';
 
 class Board extends Component{
-
-    constructor(props){
-        super();
-    }
-
     arrRows = [...Array(20).keys()];
 
     render(){
@@ -18,6 +13,7 @@ class Board extends Component{
                     this.arrRows.map((row) => 
                         <div key={row.toString()} className="board-row">
                             {
+                                // eslint-disable-next-line no-plusplus
                                 cells.slice(row * 20, counter++ * 20)
                                     .map((cellID) =>
                                         <Square key={cellID.toString()}
