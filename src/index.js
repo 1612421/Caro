@@ -1,11 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import Game from './containers/Game'
+import * as serviceWorker from './serviceWorker';
+import Store from './store';
+
+// eslint-disable-next-line import/imports-first
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import Game from './Components/Game';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<Game />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={Store}>
+        <Game />
+    </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
