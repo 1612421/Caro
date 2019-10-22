@@ -6,13 +6,13 @@ const Moves = (props) => {
         <div className="game-info__moves overflow-auto">
             <ol className="list-moves list-unstyled">
                 <li>
-                    <button type="button" className="btn btn-danger btn-block"
+                    <button type="button" className="btn btn-danger btn-block btn-text-big"
                             onClick={() => other.createNewGame()}>
                         New game
                     </button>
                 </li>
                 <li>
-                <button type="button" className="btn btn-danger btn-block"
+                <button type="button" className="btn btn-danger btn-block btn-text-big"
                             onClick={() => other.sort()}>
                         {
                             content

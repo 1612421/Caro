@@ -5,8 +5,10 @@ import Status from '../components/Status'
 import Moves from '../components/Moves';
 import GameAction from '../actions/GameAction';
 
+// eslint-disable-next-line import/imports-first
+import '../css/App.css';
+
 const Game = (props) => {
-    console.log(props.xIsNext);
     const cells = [...Array(400).keys()];
     const { squares, squaresWinner, xIsNext, haveWinner, history, stepNumber, content, ...other } = props;
 
