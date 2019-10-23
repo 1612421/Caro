@@ -1,11 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import Board from '../components/Board';
-import Status from '../components/Status'
-import Moves from '../components/Moves';
-import GameAction from '../actions/GameAction';
+import Board from './Board';
+import Status from './Status'
+import Moves from './Moves';
 
-// eslint-disable-next-line import/imports-first
 import '../css/App.css';
 
 const Game = (props) => {
@@ -34,26 +31,4 @@ const Game = (props) => {
     );
 }
 
-const mapStateToProps = (state) => {
-    return state;
-}
-
-const mapDispatchToProps = (dispatch) => ({
-    createNewGame: () => {
-        dispatch(GameAction.createNewGame());
-    },
-
-    clickSquare: (i) => {
-        dispatch(GameAction.clickSquare(i));
-    },
-
-    jumToStepNumber: (i) => {
-        dispatch(GameAction.jumpToStepNumber(i));
-    },
-
-    sort: () => {
-        dispatch(GameAction.sort());
-    }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default Game;

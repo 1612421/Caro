@@ -22,3 +22,7 @@
     word-wrap: break-word;
     width: 100%;
 }
+.dropdown-menu-right
+{
+    margin-right: 5px;
+}

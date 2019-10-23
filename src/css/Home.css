@@ -1,0 +1,47 @@
+header.masthead
+{
+    color: #fff;
+    margin: auto auto;
+    text-align: center;
+}
+
+header.masthead .intro-text .intro-lead-in 
+{
+    font-size: 22px;
+    font-style: italic;
+    line-height: 22px;
+    margin-bottom: 25px; 
+}
+
+header.masthead .intro-text .intro-heading 
+{
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 50px;
+    margin-bottom: 25px;
+}
+
+.btn-primary-yellow
+{
+    background-color: #fed136;
+    border-color: #fed136;
+}
+
+.btn-primary-yellow:active, .btn-primary-yellow:focus, .btn-primary-yellow:hover 
+{
+    background-color: #fec810 !important;
+    border-color: #fec810 !important;
+    color: white;
+}
+
+.btn-primary-yellow:active, .btn-primary-yellow:focus 
+{
+    box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+}
+
+.btn-xl 
+{
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 30px;
+}

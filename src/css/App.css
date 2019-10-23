@@ -204,3 +204,7 @@ h3 {
   font-size: 1.2rem;
   text-align: left;
 }
+
+.text-red {
+  color: red;
+}
