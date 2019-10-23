@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { createStore, applyMiddleware, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -13,7 +13,7 @@ const Store = createStore(
         GameReducer, 
         UserReducer 
     }),
-    compose(applyMiddleware(logger, thunk))
+    applyMiddleware(logger, thunk)
 );
 
 export default Store;

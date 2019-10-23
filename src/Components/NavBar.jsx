@@ -5,7 +5,7 @@ import '../css/NavBar.css';
 class NavBar extends Component {
 
     renderElement = () => {
-        const { isAuthenticated, account, username, email } = this.props;
+        const { isAuthenticated, account, username, email} = this.props;
         if (isAuthenticated){
             return (
                 <li className="nav-item dropdow r-3">
@@ -25,9 +25,9 @@ class NavBar extends Component {
                                     <div className="col-lg-8">
                                         <p className="text-left text-wrap"><strong>{username}</strong></p>
                                         <p className="text-left small text-wrap">{email}</p>
-                                        <p className="text-left">
+                                        {/* <p className="text-left">
                                             <a href="/" className="btn btn-primary btn-block btn-sm">Info</a>
-                                        </p>
+                                        </p> */}
                                     </div>
                                 </div>
                             </div>

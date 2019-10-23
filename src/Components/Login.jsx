@@ -17,11 +17,11 @@ class Login extends Component {
     showErr = () => {
         const { err } = this.props;
 
-        if (err && err.count !== 0){
+        if (err && err.length !== 0){
             return  (
                 <div className="alert alert-danger m-4 p-1" role="alert">
                     {
-                        err.map((item) => (<div key={item.id}>{item}<br/></div>))
+                        err.map((item, index) => (<div key={index}>{item}<br/></div>))
                     }
                 </div>  
             )
