@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import UserAction from '../actions/UserAction';
 import Root from '../components/Root';
 
 const mapStateToProps = (state) => {
@@ -10,4 +11,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Root);
+const mapDispatchToProps = (dispatch) => ({
+    logout: () => dispatch(UserAction.logout())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);

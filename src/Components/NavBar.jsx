@@ -5,58 +5,60 @@ import '../css/NavBar.css';
 class NavBar extends Component {
 
     renderElement = () => {
-        const { isAuthenticated, account, username, email} = this.props;
+        const { isAuthenticated, account, username, email, logout } = this.props;
         if (isAuthenticated){
             return (
-                <li className="nav-item dropdow r-3">
-                    <a href="/#" className="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <span className="fas fa-user-tie"/> &nbsp;  
-                        <strong>{account}</strong>
-                    </a>
-                    <ul className="dropdown-menu dropdown-menu-right">
-                        <li>
-                            <div className="navbar-login">
-                                <div className="row">
-                                    <div className="col-lg-4">
-                                        <p className="text-center">
-                                            <span className="fas fa-user-tie icon-size"/>
-                                        </p>
-                                    </div>
-                                    <div className="col-lg-8">
-                                        <p className="text-left text-wrap"><strong>{username}</strong></p>
-                                        <p className="text-left small text-wrap">{email}</p>
-                                        {/* <p className="text-left">
-                                            <a href="/" className="btn btn-primary btn-block btn-sm">Info</a>
-                                        </p> */}
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="navbar-login navbar-login-session">
-                                <div className="row">
-                                    <div className="col-lg-12">
-                                        <p>
-                                            <a href="/user/logout" className="btn btn-danger btn-block">Logout</a>
-                                        </p>
+                <ul className="nav navbar-nav navbar-right r-5">
+                    <li className="nav-item dropdow r-3">
+                        <a href="/#" className="nav-link dropdown-toggle" data-toggle="dropdown">
+                            <span className="fas fa-user-tie"/> &nbsp;  
+                            <strong>{account}</strong>
+                        </a>
+                        <ul className="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <div className="navbar-login">
+                                    <div className="row">
+                                        <div className="col-lg-4">
+                                            <p className="text-center">
+                                                <span className="fas fa-user-tie icon-size"/>
+                                            </p>
+                                        </div>
+                                        <div className="col-lg-8">
+                                            <p className="text-left text-wrap"><strong>{username}</strong></p>
+                                            <p className="text-left small text-wrap">{email}</p>
+                                            {/* <p className="text-left">
+                                                <a href="/" className="btn btn-primary btn-block btn-sm">Info</a>
+                                            </p> */}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
+                            </li>
+                            <li>
+                                <div className="navbar-login navbar-login-session">
+                                    <div className="row">
+                                        <div className="col-lg-12">
+                                            <p>
+                                                <button onClick={() => logout()} className="btn btn-danger btn-block" type="button">Logout</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             );
         }
 
         return (
-            <>
+            <ul className="nav navbar-nav navbar-right r-5">
                 <li className="nav-item">
-                    <a className="nav-link" href="/user/register">Don&#39;t have an account?</a>
+                    <a href="/user/register" className="btn btn-outline-success mr-2" >Don&#39;t have an account?</a>
                 </li>
                 <li className="nav-item">
                     <a href="/user/login" className="btn btn-outline-success">Login</a>
                 </li>
-            </>
+            </ul>
         );
     }
 
@@ -74,9 +76,7 @@ class NavBar extends Component {
                         <a className="nav-link" href="/game">Game</a>
                     </li>
                 </ul>
-                <ul className="nav navbar-nav navbar-right r-5">
-                    {this.renderElement()}
-                </ul>
+                {this.renderElement()}
             </div>
         </nav>
     );

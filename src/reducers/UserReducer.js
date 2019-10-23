@@ -16,26 +16,27 @@ const UserReducer = (state = initialState, action) => {
                 err: []
             };
         }
-                
-        case 'LOGIN_FAIL':
+
+        case 'INFO_SUCCESS':{
+            localStorage.setItem('account', action.payload.account);
+            localStorage.setItem('username', action.payload.username);
+            localStorage.setItem('email', action.payload.email);
             return {
                 ...state,
-                isAuthenticated: false,
-                err: [...action.payload.messages]
-            };
+                ...action.payload
+            }    
+        }
 
-        case 'INFO_SUCCESS':
-            {
-                localStorage.setItem('account', action.payload.account);
-                localStorage.setItem('username', action.payload.username);
-                localStorage.setItem('email', action.payload.email);
-                return {
-                    ...state,
-                    ...action.payload
-                }    
-            }
-            
-        case 'INFO_FAIL':
+        case 'LOGOUT_SUCCESS': {
+            localStorage.setItem('isAuthenticated', "");
+            return {
+                ...state,
+                isAuthenticated: null,
+                err: []
+            } 
+        }
+
+        case 'UPDATE_ERR':
             return {
                 ...state,
                 err: [...action.payload.messages]

@@ -6,14 +6,6 @@ import '../css/Login.css';
 
 class Login extends Component {
 
-    componentDidMount(){
-        const { isAuthenticated, history } = this.props;
-      
-        if (isAuthenticated){
-            history.push('/');
-        }
-    }
-
     showErr = () => {
         const { err } = this.props;
 
@@ -30,7 +22,6 @@ class Login extends Component {
 
     renderElement = () => {
         const { isAuthenticated } = this.props;
-      
         if (isAuthenticated){
             return <Redirect to='/'/>
         }

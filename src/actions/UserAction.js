@@ -1,18 +1,43 @@
 import fetch from 'cross-fetch';
+import { createBrowserHistory } from 'history';
 
-function  fetchInfoUser() {
+const history = createBrowserHistory();
+
+function setErrorMessage(messages){
+    return {
+        type: 'UPDATE_ERR',
+        payload: {
+            messages: [...messages]
+        }
+    };
+}
+
+function logout(){
     return dispatch => {
-        fetch('http://localhost:3000/me', {
+        fetch('https://caro-backend.herokuapp.com/user/logout', {
             method: 'GET',
             credentials: 'include'
         }).then(res => {
             if (res.status !== 200){
-                return dispatch({ 
-                    type: 'INFO_FAIL',
-                    payload: {
-                        messages: ['Something is wrong. Please try later!']
-                    }
-                });
+                return dispatch(setErrorMessage(['Something is wrong. Please try later!'])); 
+            }
+
+            dispatch({type: 'LOGOUT_SUCCESS'});
+            return history.push('/');
+        }).catch(err => {
+            return dispatch(setErrorMessage([err.message]));
+        });
+    }
+}
+
+function  fetchInfoUser() {
+    return dispatch => {
+        fetch('https://caro-backend.herokuapp.com/me', {
+            method: 'GET',
+            credentials: 'include'
+        }).then(res => {
+            if (res.status !== 200){
+                return dispatch(setErrorMessage(['Something is wrong. Please try later!'])); 
             }
 
             return res.json();
@@ -24,19 +49,14 @@ function  fetchInfoUser() {
                 }
             });
         }).catch(err => {
-            return dispatch({ 
-                type: 'INFO_FAIL',
-                payload: {
-                    messages: [err.messages]
-                }
-            });
+            return dispatch(setErrorMessage([err.message]));
         });
     }
 }
 
 function postLogin(postFields){
     return dispatch => {
-        fetch('http://localhost:3000/user/login', {
+        fetch('https://caro-backend.herokuapp.com/user/login', {
             method: 'POST',
             credentials: 'include',
             headers:{
@@ -50,32 +70,42 @@ function postLogin(postFields){
             }
 
             res.json()
-                .then((data) => dispatch({
-                        type: 'LOGIN_FAIL',
-                        payload: {
-                            messages: [...data.messages]
-                        }
-                })).catch(err => dispatch({
-                    type: 'LOGIN_FAIL',
-                    payload: {
-                        messages: [err.message]
-                    }
-                }));
+                .then((data) => dispatch(setErrorMessage([...data.messages])))
+                .catch(err => dispatch(setErrorMessage([err.message])));
             }
-        ).catch(err => dispatch({
-                    type: 'LOGIN_FAIL',
-                    payload: {
-                        messages: [err.message]
-                    }
-                }
-            )
-        );
+        ).catch(err => dispatch(setErrorMessage([err.message])));
+    }
+}
+
+function postRegister(postFields){
+    return dispatch => {
+        fetch('https://caro-backend.herokuapp.com/user/register', {
+            method: 'POST',
+            credentials: 'include',
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify(postFields)
+        }).then((res) => {
+            if (res.status === 200){
+                dispatch({ type: 'LOGIN_SUCCESS' });
+                return dispatch(fetchInfoUser());
+            }
+
+            res.json()
+                .then((data) => dispatch(setErrorMessage([...data.messages])))
+                .catch(err => dispatch(setErrorMessage([err.message])));
+            }
+        ).catch(err => dispatch(setErrorMessage([err.message])));
     }
 }
 
 const UserAction = {
     login: (postFields) => postLogin(postFields),
-    getInfoUser: () => fetchInfoUser()
+    getInfoUser: () => fetchInfoUser(),
+    setErrorMessage: (messages) => setErrorMessage(messages),
+    logout: () => logout(),
+    register: (postFields) => postRegister(postFields)
 }
 
 export default UserAction;
