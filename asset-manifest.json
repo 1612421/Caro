@@ -1,17 +1,15 @@
 {
   "files": {
-    "main.css": "/Caro/static/css/main.ca04d9d1.chunk.css",
-    "main.js": "/Caro/static/js/main.ba1fd43d.chunk.js",
-    "main.js.map": "/Caro/static/js/main.ba1fd43d.chunk.js.map",
-    "runtime~main.js": "/Caro/static/js/runtime~main.439958b1.js",
-    "runtime~main.js.map": "/Caro/static/js/runtime~main.439958b1.js.map",
-    "static/css/2.266e55a5.chunk.css": "/Caro/static/css/2.266e55a5.chunk.css",
-    "static/js/2.e844d84b.chunk.js": "/Caro/static/js/2.e844d84b.chunk.js",
-    "static/js/2.e844d84b.chunk.js.map": "/Caro/static/js/2.e844d84b.chunk.js.map",
+    "main.css": "/Caro/static/css/main.60bf3475.chunk.css",
+    "main.js": "/Caro/static/js/main.595b80a3.chunk.js",
+    "main.js.map": "/Caro/static/js/main.595b80a3.chunk.js.map",
+    "runtime~main.js": "/Caro/static/js/runtime~main.64f6ffc0.js",
+    "runtime~main.js.map": "/Caro/static/js/runtime~main.64f6ffc0.js.map",
+    "static/js/2.dd3665ee.chunk.js": "/Caro/static/js/2.dd3665ee.chunk.js",
+    "static/js/2.dd3665ee.chunk.js.map": "/Caro/static/js/2.dd3665ee.chunk.js.map",
     "index.html": "/Caro/index.html",
-    "precache-manifest.77e9436bcb4b2161eb1eb8e3990aa03a.js": "/Caro/precache-manifest.77e9436bcb4b2161eb1eb8e3990aa03a.js",
+    "precache-manifest.d1d045332cae5e67fd465c48c48e8310.js": "/Caro/precache-manifest.d1d045332cae5e67fd465c48c48e8310.js",
     "service-worker.js": "/Caro/service-worker.js",
-    "static/css/2.266e55a5.chunk.css.map": "/Caro/static/css/2.266e55a5.chunk.css.map",
-    "static/css/main.ca04d9d1.chunk.css.map": "/Caro/static/css/main.ca04d9d1.chunk.css.map"
+    "static/css/main.60bf3475.chunk.css.map": "/Caro/static/css/main.60bf3475.chunk.css.map"
   }
 }
