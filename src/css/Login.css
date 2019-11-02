@@ -24,6 +24,10 @@ width: 400px;
 background-color: rgba(0,0,0,0.5) !important;
 }
 
+.card-profile {
+    width: 600px;
+}
+
 .social_icon span{
 font-size: 60px;
 margin-left: 10px;
@@ -76,7 +80,12 @@ background-color: #FFC312;
 width: 100px;
 }
 
-.login_btn:hover{
+.btn-yellow{
+    color: black;
+    background-color: #FFC312;
+}
+
+.login_btn.btn-yellow:hover{
 color: black;
 background-color: white;
 }

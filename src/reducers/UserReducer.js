@@ -3,6 +3,7 @@ const initialState = {
     account: localStorage.getItem('account'),
     username: localStorage.getItem('username'),
     email: localStorage.getItem('email'),
+    avatar: localStorage.getItem('avatar'),
     err: localStorage.getItem('err')
 };
 
@@ -21,6 +22,7 @@ const UserReducer = (state = initialState, action) => {
             localStorage.setItem('account', action.payload.account);
             localStorage.setItem('username', action.payload.username);
             localStorage.setItem('email', action.payload.email);
+            localStorage.setItem('avatar', action.payload.avatar);
             return {
                 ...state,
                 ...action.payload

@@ -14,12 +14,18 @@ function setErrorMessage(messages){
 
 function logout(){
     return dispatch => {
-        fetch('https://caro-backend.herokuapp.com/user/logout', {
+        fetch('http://localhost:3000/user/logout', {
             method: 'GET',
             credentials: 'include'
         }).then(res => {
             if (res.status !== 200){
-                return dispatch(setErrorMessage(['Something is wrong. Please try later!'])); 
+                dispatch(setErrorMessage(['Something is wrong. Please try later!'])); 
+
+                if (res.status === 400){
+                    history.push('/');
+                }
+
+                return;
             }
 
             dispatch({type: 'LOGOUT_SUCCESS'});
@@ -32,7 +38,7 @@ function logout(){
 
 function  fetchInfoUser() {
     return dispatch => {
-        fetch('https://caro-backend.herokuapp.com/me', {
+        fetch('http://localhost:3000/me', {
             method: 'GET',
             credentials: 'include'
         }).then(res => {
@@ -56,7 +62,7 @@ function  fetchInfoUser() {
 
 function postLogin(postFields){
     return dispatch => {
-        fetch('https://caro-backend.herokuapp.com/user/login', {
+        fetch('http://localhost:3000/user/login', {
             method: 'POST',
             credentials: 'include',
             headers:{
@@ -79,7 +85,7 @@ function postLogin(postFields){
 
 function postRegister(postFields){
     return dispatch => {
-        fetch('https://caro-backend.herokuapp.com/user/register', {
+        fetch('http://localhost:3000/user/register', {
             method: 'POST',
             credentials: 'include',
             headers:{

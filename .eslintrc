@@ -15,7 +15,9 @@
       "consistent-return": 0,
       "react/no-string-refs": 0,
       "react/no-array-index-key": 0,
-      "eqeqeq": 0
+      "eqeqeq": 0,
+      "jsx-a11y/control-has-associated-label": 0,
+      "jsx-a11y/label-has-associated-control": 0
     },
     "globals": {
       "window": true,

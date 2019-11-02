@@ -2,17 +2,26 @@ import React, { Component } from 'react';
 
 import '../css/NavBar.css';
 
+const image30 = {
+    width: '30px',
+    height: '30px',
+}
+const image100 = {
+    width: '100px',
+    height: '100px',
+}
+
 class NavBar extends Component {
 
     renderElement = () => {
-        const { isAuthenticated, account, username, email, logout } = this.props;
+        const { isAuthenticated, account, username, email, logout, avatar } = this.props;
         if (isAuthenticated){
             return (
                 <ul className="nav navbar-nav navbar-right r-5">
                     <li className="nav-item dropdow r-3">
                         <a href="/#" className="nav-link dropdown-toggle" data-toggle="dropdown">
-                            <span className="fas fa-user-tie"/> &nbsp;  
-                            <strong>{account}</strong>
+                            <img id="avatar" alt="User Pic" src={`http://localhost:3000/${avatar}`} className="rounded-circle mr-2" style={image30} />
+                            <strong>{account}</strong> 
                         </a>
                         <ul className="dropdown-menu dropdown-menu-right">
                             <li>
@@ -20,15 +29,15 @@ class NavBar extends Component {
                                     <div className="row">
                                         <div className="col-lg-4">
                                             <p className="text-center">
-                                                <span className="fas fa-user-tie icon-size"/>
+                                            <img id="avatar" alt="User Pic" src={`http://localhost:3000/${avatar}`} className="rounded-circle mr-2" style={image100} />
                                             </p>
                                         </div>
                                         <div className="col-lg-8">
                                             <p className="text-left text-wrap"><strong>{username}</strong></p>
                                             <p className="text-left small text-wrap">{email}</p>
-                                            {/* <p className="text-left">
-                                                <a href="/" className="btn btn-primary btn-block btn-sm">Info</a>
-                                            </p> */}
+                                            <p className="text-left">
+                                                <a href="/user/profile" className="btn btn-primary btn-block btn-sm">view</a>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -52,9 +61,6 @@ class NavBar extends Component {
 
         return (
             <ul className="nav navbar-nav navbar-right r-5">
-                <li className="nav-item">
-                    <a href="/user/register" className="btn btn-outline-success mr-2" >Don&#39;t have an account?</a>
-                </li>
                 <li className="nav-item">
                     <a href="/user/login" className="btn btn-outline-success">Login</a>
                 </li>
