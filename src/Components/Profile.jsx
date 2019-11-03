@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import ChangePassword from '../containers/ChangePassword';
 
 const alertContainerStyle = {
     width: '100%',
@@ -36,8 +37,6 @@ class Profile extends Component {
         btnCancelAvatar.disabled = true;
 
         const data = new FormData();
-        console.log(fileInput.files[0]);
-
         resetSuccessStatus();
         data.append('avatar', fileInput.files[0]);
         updateAvatar({
@@ -124,14 +123,14 @@ class Profile extends Component {
         return false;
     }
 
-    ShowAlert = () => {
-
+    showAlert = () => {
         const { success, err } = this.props;
+
         if ( success === true){
             return (
                 <div className="justify-content-center mt-4"  style={alertContainerStyle}>
                     <div className="alert alert-success mx-auto" role="alert" style={alertStyle}>
-                        Update profile successfully!
+                        Update successfully!
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -149,7 +148,10 @@ class Profile extends Component {
                                 <span aria-hidden="true">&times;</span>
                         </button>
                         {
-                            err.map((item) => (<>{item}<br/></>))
+                            err.map((item) => {
+                                console.log(item);
+                                return (<>{item}<br/></>);
+                            })
                         }
                         
                     </div>
@@ -158,8 +160,65 @@ class Profile extends Component {
         }
     }
 
+    renderElement = () => {
+        const { username, email, avatar, invertShouldShowChangePassword } = this.props;
+
+        return (
+            <div className="container">
+                <div className="row h-100 my-auto">
+                    <div className="card card-block mx-auto card-profile">
+                        <div className="card-header">
+                            <h3>User profile</h3>
+                        </div>
+                        <div className="card-body">
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="row">
+                                    <div className="col-md-4 col-12">
+                                        <div className="row justify-content-center">
+                                            <div className="img-custom">
+                                                <img ref={this.avatar} id="avatar" alt="User Pic" src={`http://localhost:3000/${avatar}`} className="rounded-circle" />
+                                            </div>
+                                            
+                                            <div className="img-thumbnail" id="loading" hidden>
+                                                <div className="spinner-border" role="status"/>
+                                            </div>
+                                            <input ref={this.file} type="file" id="file" onChange={this.handleChangeFile} hidden />
+                                        </div> 
+                                        <div className="row justify-content-center">
+                                            <button type="button" className="btn btn-sm btn-outline-warning fas fa-image m-1" onClick={() => { this.file.current.click() }}/>
+                                            <button ref={this.btnSaveAvatar} id="save-avatar-btn" type="button" className="btn btn-sm btn-outline-success far fa-save m-1" onClick={this.handleSaveAvatar} hidden/>
+                                            <button ref={this.btnCancelAvatar} id="cancel-avatar-btn" type="button" className="btn btn-sm btn-outline-danger fas fa-window-close m-1" onClick={this.handleCancelChangeAvatar} hidden/>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-8 mt-5">
+                                        <div className="input-group form-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text"><i className="fas fa-file-signature"/></span>
+                                            </div>
+                                            <input ref={this.username} type="text" name="userName" id="name" defaultValue={username} className="form-control" placeholder="Username" required readOnly/>
+                                        </div>
+                                        <div className="input-group form-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text"><i className="fas fa-envelope"/></span>
+                                            </div>
+                                            <input ref={this.email} type="email" defaultValue={email} className="form-control" placeholder="Email" required readOnly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button ref={this.btnUpdateInfo} type="button" id="update" className="btn float-right m-2 btn-yellow" onClick={this.handleUpdateInfo}>Edit</button>
+                                <button ref={this.btnSaveInfo} type="submit" id="save" className="btn btn-success float-right m-2" hidden>Save</button>
+                                <button ref={this.btnCancelUpdateInfo} type="button" id="cancel" className="btn btn-danger float-right m-2" onClick={this.handleCancelUpateInfo} hidden>Cancel</button>
+                                <button type="button" className="btn float-left m-2 btn-yellow" onClick={invertShouldShowChangePassword}>Change password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     render(){
-        const { isAuthenticated, username, email, avatar } = this.props;
+        const { isAuthenticated, shouldShowChangePassword } = this.props;
 
         if (!isAuthenticated){
             return <Redirect to='/'/>
@@ -167,57 +226,9 @@ class Profile extends Component {
 
         return (
             <>
-                {this.ShowAlert()}
-                <div className="container">
-                    <div className="row h-100 my-auto">
-                        <div className="card card-block mx-auto card-profile">
-                            <div className="card-header">
-                                <h3>User profile</h3>
-                            </div>
-                            <div className="card-body">
-                                <form onSubmit={this.handleSubmit}>
-                                    <div className="row">
-                                        <div className="col-md-4 col-12">
-                                            <div className="row justify-content-center">
-                                                <div className="img-custom">
-                                                    <img ref={this.avatar} id="avatar" alt="User Pic" src={`http://localhost:3000/${avatar}`} className="rounded-circle" />
-                                                </div>
-                                                
-                                                <div className="img-thumbnail" id="loading" hidden>
-                                                    <div className="spinner-border" role="status"/>
-                                                </div>
-                                                <input ref={this.file} type="file" id="file" onChange={this.handleChangeFile} hidden />
-                                            </div> 
-                                            <div className="row justify-content-center">
-                                                <button type="button" className="btn btn-sm btn-outline-warning fas fa-image m-1" onClick={() => { this.file.current.click() }}/>
-                                                <button ref={this.btnSaveAvatar} id="save-avatar-btn" type="button" className="btn btn-sm btn-outline-success far fa-save m-1" onClick={this.handleSaveAvatar} hidden/>
-                                                <button ref={this.btnCancelAvatar} id="cancel-avatar-btn" type="button" className="btn btn-sm btn-outline-danger fas fa-window-close m-1" onClick={this.handleCancelChangeAvatar} hidden/>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-8 mt-5">
-                                            <div className="input-group form-group">
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"><i className="fas fa-file-signature"/></span>
-                                                </div>
-                                                <input ref={this.username} type="text" name="userName" id="name" defaultValue={username} className="form-control" placeholder="Username" required readOnly/>
-                                            </div>
-                                            <div className="input-group form-group">
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"><i className="fas fa-envelope"/></span>
-                                                </div>
-                                                <input ref={this.email} type="email" defaultValue={email} className="form-control" placeholder="Email" required readOnly/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button ref={this.btnUpdateInfo} type="button" id="update" className="btn float-right m-2 btn-yellow" onClick={this.handleUpdateInfo}>Edit</button>
-                                    <button ref={this.btnSaveInfo} type="submit" id="save" className="btn btn-success float-right m-2" hidden>Save</button>
-                                    <button ref={this.btnCancelUpdateInfo} type="button" id="cancel" className="btn btn-danger float-right m-2" onClick={this.handleCancelUpateInfo} hidden>Cancel</button>
-                                    <a href="/user/profile/change-password" role="button" className="btn float-left m-2 btn-yellow">Change password</a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {this.showAlert()}
+                { shouldShowChangePassword && <ChangePassword/> }
+                { !shouldShowChangePassword && this.renderElement()}
             </>
         );
     }

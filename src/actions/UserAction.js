@@ -1,7 +1,5 @@
 import fetch from 'cross-fetch';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
+import history from '../history';
 
 function setErrorMessage(messages){
     return {
@@ -155,6 +153,30 @@ function postUpdateAvatar(postFields){
     };
 }
 
+function postChangePassword(postFields){
+    return dispatch => {
+        fetch('http://localhost:3000/user/change-password', {
+            method: 'POST',
+            credentials: 'include',
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify(postFields)
+        }).then((res) => {
+            if (res.status === 200){
+                return dispatch({ 
+                    type: 'PASSWORD_CHANGE_SUCCESS'
+                });
+            }
+
+            res.json()
+                .then((data) => dispatch(setErrorMessage([...data.messages])))
+                .catch(err => dispatch(setErrorMessage([err.message])));
+            }
+        ).catch(err => dispatch(setErrorMessage([err.message])));
+    }
+}
+
 const UserAction = {
     login: (postFields) => postLogin(postFields),
     getInfoUser: () => fetchInfoUser(),
@@ -163,7 +185,9 @@ const UserAction = {
     register: (postFields) => postRegister(postFields),
     updateProfile: (postFields) => postUpdateProfile(postFields),
     resetSuccessStatus: () => ({type: 'RESET_SUCCESS_STATUS'}),
-    updateAvatar: (postFields) => postUpdateAvatar(postFields)
+    updateAvatar: (postFields) => postUpdateAvatar(postFields),
+    invertShouldShowChangePassword: () => ({type: 'INVERT_SHOW_CHANGE_PASSWORD'}),
+    changePassword: (postFields) => postChangePassword(postFields)
 }
 
 export default UserAction;

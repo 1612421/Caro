@@ -4,8 +4,9 @@ const initialState = {
     username: localStorage.getItem('username'),
     email: localStorage.getItem('email'),
     avatar: localStorage.getItem('avatar'),
-    err: localStorage.getItem('err'),
-    success: false
+    err: [],
+    success: false,
+    shouldShowChangePassword: false
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -67,6 +68,12 @@ const UserReducer = (state = initialState, action) => {
                 err: [...action.payload.messages]
             }
 
+        case 'INVERT_SHOW_CHANGE_PASSWORD':
+            return {
+                ...state,
+                shouldShowChangePassword: !state.shouldShowChangePassword
+            }
+
         case 'RESET_SUCCESS_STATUS':
             return{
                 ...state,
@@ -74,6 +81,13 @@ const UserReducer = (state = initialState, action) => {
                 err: []
             }
         
+        case 'PASSWORD_CHANGE_SUCCESS':
+            return{
+                ...state,
+                success: true,
+                err: []
+            }
+
         default:
             return state;
     }

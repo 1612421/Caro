@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Switch, Route} from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import history from '../history';
 
 import Login from '../containers/Login';
 import Register from '../containers/Register';
@@ -8,8 +8,6 @@ import Game from '../containers/Game';
 import NavBar from './NavBar';
 import Home from './Home';
 import Profile from '../containers/Profile';
-
-const history = createBrowserHistory();
 
 const Root = (props) => {
     const { isAuthenticated, account, username, email, logout, avatar} = props;

@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
         email: state.UserReducer.email,
         avatar: state.UserReducer.avatar,
         success: state.UserReducer.success,
-        err: state.UserReducer.err
+        err: state.UserReducer.err,
+        shouldShowChangePassword: state.UserReducer.shouldShowChangePassword
     }
 }
 
@@ -18,7 +19,9 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(UserAction.updateProfile(postField));
     },
     resetSuccessStatus: () => dispatch(UserAction.resetSuccessStatus()),
-    updateAvatar: (postFields) => dispatch(UserAction.updateAvatar(postFields))
+    updateAvatar: (postFields) => dispatch(UserAction.updateAvatar(postFields)),
+    invertShouldShowChangePassword: () => dispatch(UserAction.invertShouldShowChangePassword()),
+    setErrMessage: (messages) => dispatch(UserAction.setErrMessage(messages))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
