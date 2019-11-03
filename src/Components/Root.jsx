@@ -30,7 +30,9 @@ const Root = (props) => {
                     <Route exact path='/user/profile'>
                         <Profile/>    
                     </Route>
-                    <Route exact path="/game" component={Game}/>
+                    <Route exact path="/game">
+                        <Game/>
+                    </Route>
                     <Route exact path="/">
                         <Home isAuthenticated={isAuthenticated}/>
                     </Route>

@@ -149,7 +149,6 @@ class Profile extends Component {
                         </button>
                         {
                             err.map((item) => {
-                                console.log(item);
                                 return (<>{item}<br/></>);
                             })
                         }
