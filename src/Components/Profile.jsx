@@ -1,18 +1,55 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
+const alertContainerStyle = {
+    width: '100%',
+    'zIndex': '2',
+    position: 'fixed'
+}
+
+const alertStyle = {
+    width: '600px',
+}
+
 class Profile extends Component {
 
     constructor(props){
         super(props);
         this.avatar = React.createRef();
         this.file = React.createRef();
-        this.account = React.createRef();
+        this.username = React.createRef();
         this.email = React.createRef();
         this.btnSaveAvatar = React.createRef();
         this.btnCancelAvatar = React.createRef();
+        this.btnUpdateInfo = React.createRef();
+        this.btnSaveInfo = React.createRef();
+        this.btnCancelUpdateInfo = React.createRef();
     }
 
+    handleSaveAvatar = () => {
+        const btnSaveAvatar = this.btnSaveAvatar.current;
+        const btnCancelAvatar = this.btnCancelAvatar.current;
+        const fileInput = this.file.current;
+        const { updateAvatar, resetSuccessStatus } = this.props;
+        
+        btnSaveAvatar.disabled = true;
+        btnCancelAvatar.disabled = true;
+
+        const data = new FormData();
+        console.log(fileInput.files[0]);
+
+        resetSuccessStatus();
+        data.append('avatar', fileInput.files[0]);
+        updateAvatar({
+            data,
+            filename: fileInput.files[0].filename
+        });
+        btnSaveAvatar.disabled = false;
+        btnCancelAvatar.disabled = false;
+
+        return false;
+
+    }
 
     handleChangeFile = () => {
         const avatar = this.avatar.current;
@@ -34,6 +71,93 @@ class Profile extends Component {
         }
     }
 
+    handleCancelChangeAvatar = () => {
+        const { avatar } = this.props;
+        const avatarImg = this.avatar.current;
+        const btnSaveAvatar = this.btnSaveAvatar.current;
+        const btnCancelAvatar = this.btnCancelAvatar.current;
+        avatarImg.src = `http://localhost:3000/${avatar}`;
+        btnSaveAvatar.hidden = true;
+        btnCancelAvatar.hidden = true;
+    }
+
+    handleUpdateInfo = () => {
+        const username = this.username.current;
+        const email = this.email.current;
+        const btnUpdateInfo = this.btnUpdateInfo.current;
+        const btnSaveInfo = this.btnSaveInfo.current;
+        const btnCancelUpdateInfo = this.btnCancelUpdateInfo.current;
+        
+        username.readOnly = false;
+        email.readOnly = false;
+        btnUpdateInfo.hidden = true;
+        btnSaveInfo.hidden = false;
+        btnCancelUpdateInfo.hidden = false;
+    }
+
+    handleCancelUpateInfo = () => {
+        const { username, email } = this.props;
+        const usernameInput = this.username.current;
+        const emailInput = this.email.current;
+        const btnUpdateInfo = this.btnUpdateInfo.current;
+        const btnSaveInfo = this.btnSaveInfo.current;
+        const btnCancelUpdateInfo = this.btnCancelUpdateInfo.current;
+
+        usernameInput.readOnly = true;
+        emailInput.readOnly = true;
+        btnUpdateInfo.hidden = false;
+        btnSaveInfo.hidden = true;
+        btnCancelUpdateInfo.hidden = true;
+        usernameInput.value = username;
+        emailInput.value = email;
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const postFields = {
+            username: this.username.current.value,
+            email: this.email.current.value
+        }
+        const { updateProfile, resetSuccessStatus } = this.props;
+        resetSuccessStatus();
+        updateProfile(postFields);
+        return false;
+    }
+
+    ShowAlert = () => {
+
+        const { success, err } = this.props;
+        if ( success === true){
+            return (
+                <div className="justify-content-center mt-4"  style={alertContainerStyle}>
+                    <div className="alert alert-success mx-auto" role="alert" style={alertStyle}>
+                        Update profile successfully!
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                
+            );
+        }
+
+        if (err && err.length !== 0){
+            return (
+                <div className="justify-content-center mt-4"  style={alertContainerStyle}>
+                    <div className="alert alert-danger mx-auto" role="alert" style={alertStyle}>
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                        </button>
+                        {
+                            err.map((item) => (<>{item}<br/></>))
+                        }
+                        
+                    </div>
+                </div>
+            ); 
+        }
+    }
+
     render(){
         const { isAuthenticated, username, email, avatar } = this.props;
 
@@ -42,64 +166,59 @@ class Profile extends Component {
         }
 
         return (
-            <div className="container">
-                <div className="row h-100 my-auto">
-                    <div className="card card-block mx-auto card-profile">
-                        <div className="card-header">
-                            <h3>User profile</h3>
-                        </div>
-                        <div className="card-body">
-                            <form>
-                                <div className="row">
-                                    <div className="col-md-4 col-12">
-                                        <div className="row justify-content-center">
-                                            <div className="img-custom">
-                                                <img ref={this.avatar} id="avatar" alt="User Pic" src={`http://localhost:3000/${avatar}`} className="rounded-circle" />
+            <>
+                {this.ShowAlert()}
+                <div className="container">
+                    <div className="row h-100 my-auto">
+                        <div className="card card-block mx-auto card-profile">
+                            <div className="card-header">
+                                <h3>User profile</h3>
+                            </div>
+                            <div className="card-body">
+                                <form onSubmit={this.handleSubmit}>
+                                    <div className="row">
+                                        <div className="col-md-4 col-12">
+                                            <div className="row justify-content-center">
+                                                <div className="img-custom">
+                                                    <img ref={this.avatar} id="avatar" alt="User Pic" src={`http://localhost:3000/${avatar}`} className="rounded-circle" />
+                                                </div>
+                                                
+                                                <div className="img-thumbnail" id="loading" hidden>
+                                                    <div className="spinner-border" role="status"/>
+                                                </div>
+                                                <input ref={this.file} type="file" id="file" onChange={this.handleChangeFile} hidden />
+                                            </div> 
+                                            <div className="row justify-content-center">
+                                                <button type="button" className="btn btn-sm btn-outline-warning fas fa-image m-1" onClick={() => { this.file.current.click() }}/>
+                                                <button ref={this.btnSaveAvatar} id="save-avatar-btn" type="button" className="btn btn-sm btn-outline-success far fa-save m-1" onClick={this.handleSaveAvatar} hidden/>
+                                                <button ref={this.btnCancelAvatar} id="cancel-avatar-btn" type="button" className="btn btn-sm btn-outline-danger fas fa-window-close m-1" onClick={this.handleCancelChangeAvatar} hidden/>
                                             </div>
-                                            
-                                            <div className="img-thumbnail" id="loading" hidden>
-                                                <div className="spinner-border" role="status"/>
+                                        </div>
+                                        <div className="col-md-8 mt-5">
+                                            <div className="input-group form-group">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text"><i className="fas fa-file-signature"/></span>
+                                                </div>
+                                                <input ref={this.username} type="text" name="userName" id="name" defaultValue={username} className="form-control" placeholder="Username" required readOnly/>
                                             </div>
-                                            <input ref={this.file} type="file" id="file" onChange={this.handleChangeFile} hidden />
-                                        </div> 
-                                        <div className="row justify-content-center">
-                                            <button type="button" className="btn btn-sm btn-outline-warning fas fa-image m-1" onClick={() => { this.file.current.click() }}/>
-                                            <button ref={this.btnSaveAvatar} id="save-avatar-btn" type="button" className="btn btn-sm btn-outline-success far fa-save m-1" onClick="handleSaveAvatar()" hidden/>
-                                            <button ref={this.btnCancelAvatar} id="cancel-avatar-btn" type="button" className="btn btn-sm btn-outline-danger fas fa-window-close m-1" onClick="handleCancelChangeAvatar()" hidden/>
+                                            <div className="input-group form-group">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text"><i className="fas fa-envelope"/></span>
+                                                </div>
+                                                <input ref={this.email} type="email" defaultValue={email} className="form-control" placeholder="Email" required readOnly/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-8 mt-5">
-                                        <div className="input-group form-group">
-                                            <div className="input-group-prepend">
-                                                <span className="input-group-text"><i className="fas fa-file-signature"/></span>
-                                            </div>
-                                            <input ref={this.account} type="text" name="userName" id="name" value={username} className="form-control" placeholder="Username" required readOnly/>
-                                        </div>
-                                        <div className="input-group form-group">
-                                            <div className="input-group-prepend">
-                                                <span className="input-group-text"><i className="fas fa-envelope"/></span>
-                                            </div>
-                                            <input ref={this.email} type="email" value={email} className="form-control" placeholder="Email" required readOnly/>
-                                        </div>
-                                        {/* <div className="form-group row">
-                                            <label htmlFor="name" className="col-md-3 m-1 align-self-center" ><strong>Tên</strong></label>
-                                            <input type="text" name="userName" id="name" value="{{userName}}" readOnly className="form-control col align-self-center"/>
-                                        </div>
-                                        <div className="form-group row">
-                                            <label htmlFor="email" className="col-md-3 m-1 align-self-center" ><strong>Email</strong></label>
-                                            <input type="text" value="{{user.email}}" readOnly className="form-control col align-self-center"/>
-                                        </div> */}
-                                    </div>
-                                </div>
-                                <button type="button" id="update" className="btn float-right m-2 btn-yellow" onClick="handleUpdateInfo()">Edit</button>
-                                <button type="submit" id="save" className="btn btn-success float-right m-2" hidden>Save</button>
-                                <button type="button" id="cancel" className="btn btn-danger float-right m-2" onClick="handleCancelUpateInfo()" hidden>Cancel</button>
-                                <a href="/user/profile/change-password" role="button" className="btn float-left m-2 btn-yellow">Change password</a>
-                            </form>
+                                    <button ref={this.btnUpdateInfo} type="button" id="update" className="btn float-right m-2 btn-yellow" onClick={this.handleUpdateInfo}>Edit</button>
+                                    <button ref={this.btnSaveInfo} type="submit" id="save" className="btn btn-success float-right m-2" hidden>Save</button>
+                                    <button ref={this.btnCancelUpdateInfo} type="button" id="cancel" className="btn btn-danger float-right m-2" onClick={this.handleCancelUpateInfo} hidden>Cancel</button>
+                                    <a href="/user/profile/change-password" role="button" className="btn float-left m-2 btn-yellow">Change password</a>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
 }

@@ -8,13 +8,17 @@ const mapStateToProps = (state) => {
         username: state.UserReducer.username,
         email: state.UserReducer.email,
         avatar: state.UserReducer.avatar,
+        success: state.UserReducer.success,
+        err: state.UserReducer.err
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    login: (postField) => {
-        dispatch(UserAction.login(postField));
-    }
+    updateProfile: (postField) => {
+        dispatch(UserAction.updateProfile(postField));
+    },
+    resetSuccessStatus: () => dispatch(UserAction.resetSuccessStatus()),
+    updateAvatar: (postFields) => dispatch(UserAction.updateAvatar(postFields))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

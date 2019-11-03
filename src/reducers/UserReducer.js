@@ -4,7 +4,8 @@ const initialState = {
     username: localStorage.getItem('username'),
     email: localStorage.getItem('email'),
     avatar: localStorage.getItem('avatar'),
-    err: localStorage.getItem('err')
+    err: localStorage.getItem('err'),
+    success: false
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -38,11 +39,41 @@ const UserReducer = (state = initialState, action) => {
             } 
         }
 
+        case 'PROFILE_UPDATE_SUCCESS': {
+            localStorage.setItem('username', action.payload.username);
+            localStorage.setItem('email', action.payload.email);
+            return {
+                ...state,
+                success: true,
+                ...action.payload,
+                err: []
+            }
+        }
+
+        case 'AVATAR_UPDATE_SUCCESS':{
+            localStorage.setItem('avatar', action.payload.avatar);
+            return{
+                ...state,
+                success: true,
+                ...action.payload,
+                err: []
+            }
+        }
+
         case 'UPDATE_ERR':
             return {
                 ...state,
+                success: false,
                 err: [...action.payload.messages]
             }
+
+        case 'RESET_SUCCESS_STATUS':
+            return{
+                ...state,
+                success: false,
+                err: []
+            }
+        
         default:
             return state;
     }
