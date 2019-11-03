@@ -17,7 +17,9 @@
       "react/no-array-index-key": 0,
       "eqeqeq": 0,
       "jsx-a11y/control-has-associated-label": 0,
-      "jsx-a11y/label-has-associated-control": 0
+      "jsx-a11y/label-has-associated-control": 0,
+      "jsx-a11y/interactive-supports-focus": 0,
+      "jsx-a11y/click-events-have-key-events": 0,
     },
     "globals": {
       "window": true,

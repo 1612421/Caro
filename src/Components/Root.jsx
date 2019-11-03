@@ -4,7 +4,7 @@ import history from '../history';
 
 import Login from '../containers/Login';
 import Register from '../containers/Register';
-import Game from '../containers/Game';
+import GameOnline from '../containers/GameOnline';
 import NavBar from './NavBar';
 import Home from './Home';
 import Profile from '../containers/Profile';
@@ -31,7 +31,7 @@ const Root = (props) => {
                         <Profile/>    
                     </Route>
                     <Route exact path="/game">
-                        <Game/>
+                        <GameOnline/>
                     </Route>
                     <Route exact path="/">
                         <Home isAuthenticated={isAuthenticated}/>

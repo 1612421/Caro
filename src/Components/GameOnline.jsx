@@ -3,8 +3,8 @@ import io from 'socket.io-client';
 
 import Board from './Board';
 import Status from './Status'
-import Moves from './Moves';
 import ChatBox from '../containers/ChatBox';
+import GameOnlineAction from '../containers/GameOnlineAction';
 
 import '../css/App.css';
 
@@ -12,12 +12,16 @@ const socket = io('http://localhost:3000', {path: '/api/game'});
 
 class Game extends Component {
     componentDidMount(){
-        socket.emit('chat mouted', null);
+        const { startGame } = this.props;
+
+        socket.on('game start', (data) => {
+            startGame(data);
+        });
     }
 
     render(){  
         const cells = [...Array(400).keys()];
-        const { squares, squaresWinner, xIsNext, haveWinner, history, stepNumber, content, ...other } = this.props;
+        const { squares, squaresWinner, xIsNext, haveWinner, history, stepNumber, content, socketId, ...other } = this.props;
 
         return(
             <div className="game">
@@ -30,13 +34,10 @@ class Game extends Component {
                 <div className="game-info">
                     <Status xIsNext={xIsNext}
                             haveWinner={haveWinner}/>
-                    <Moves createNewGame={other.createNewGame}
-                            history={history}
-                            stepNumber={stepNumber}
-                            onClick={other.jumToStepNumber}
-                            content={content}
-                            sort={other.sort} />
-                    <ChatBox socket={socket}/>
+                    <GameOnlineAction socket={socket}/>
+                    {
+                        socketId && <ChatBox socket={socket}/>
+                    }
                 </div>
             </div>
         );

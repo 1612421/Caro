@@ -4,6 +4,8 @@ import logger from 'redux-logger';
 
 import GameReducer  from './reducers/GameReducer';
 import UserReducer from './reducers/UserReducer';
+import ChatReducer from './reducers/ChatReducer';
+import SocketReducer from './reducers/SocketReducer';
 
 // eslint-disable-next-line import/imports-first
 import 'babel-polyfill';
@@ -11,7 +13,9 @@ import 'babel-polyfill';
 const Store = createStore(
     combineReducers({ 
         GameReducer, 
-        UserReducer 
+        UserReducer,
+        ChatReducer,
+        SocketReducer
     }),
     applyMiddleware(logger, thunk)
 );
