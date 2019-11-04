@@ -5,7 +5,6 @@ import GameOnline from '../components/GameOnline';
 
 const mapStateToProps = (state) => {
     return {
-        ...state.GameReducer,
         socketId: state.SocketReducer.socketId
     };
 }
@@ -27,7 +26,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(GameAction.sort());
     },
 
-    startGame: (data) => dispatch(SocketAction.startGame(data))
+    startGame: (data) => dispatch(SocketAction.startGame(data)),
+    leaveRoom: () => dispatch(SocketAction.leaveRoom())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameOnline);

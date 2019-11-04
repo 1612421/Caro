@@ -17,6 +17,8 @@ const ChatReducer = (state = initialState, action) => {
                 messages
             }
         }
+        case 'LEAVE_ROOM':
+            return initialState;
         default:
             return state;
     }

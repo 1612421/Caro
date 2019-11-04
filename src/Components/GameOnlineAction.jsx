@@ -17,25 +17,47 @@ class GameOnlineAction extends Component {
         invertFindingEnemyStatus();
     }
 
+    leaveRoom = () => {
+        const { leaveRoom, socket } = this.props;
+        socket.emit('leave room');
+        leaveRoom();
+    }
+
+    surrender = () => {
+        const { socket } = this.props;
+        socket.emit('surrender');
+    }
+
     renderBtnFindEnemy = () => {
         const { textOfFindEnemyBtn } = this.props;
 
         return (
-            <button type="button" className="btn btn-danger btn-block btn-text-big"
-                    onClick={this.findEnemy}>
-                {textOfFindEnemyBtn}
-            </button>
+            <li>
+                <button type="button" className="btn btn-danger btn-block btn-text-big"
+                        onClick={this.findEnemy}>
+                    {textOfFindEnemyBtn}
+                </button>
+            </li>
         );
     }
 
-    renderBtnOutGame = () => {
-        const { leaveRoom } = this.props;
+    renderBtnWhenConnected = () => {
 
         return (
-            <button type="button" className="btn btn-danger btn-block btn-text-big"
-                    onClick={leaveRoom}>
-                Out game
-            </button>
+            <>
+                <li>
+                    <button type="button" className="btn btn-danger btn-block btn-text-big"
+                            onClick={this.surrender}>
+                        Surrender
+                    </button>
+                </li>
+                <li>
+                    <button type="button" className="btn btn-danger btn-block btn-text-big"
+                            onClick={this.leaveRoom}>
+                        Out game
+                    </button>
+                </li>
+            </>
         );
     }
     
@@ -48,7 +70,7 @@ class GameOnlineAction extends Component {
                     socketId === null && this.renderBtnFindEnemy()
                 }
                 { 
-                    socketId && this.renderBtnOutGame()
+                    socketId && this.renderBtnWhenConnected()
                 }
                 {/* <li>
                     <button type="button" className="btn btn-danger btn-block btn-text-big"

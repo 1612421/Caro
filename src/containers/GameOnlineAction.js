@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     invertFindingEnemyStatus: () => dispatch(SocketAction.invertFindingEnemyStatus()),
-
+    leaveRoom: () => dispatch(SocketAction.leaveRoom())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameOnlineAction);

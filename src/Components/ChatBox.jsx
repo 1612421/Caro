@@ -15,25 +15,32 @@ class ChatBox extends Component {
     }
 
     componentDidMount(){
-        const { socket, socketId, addMessage } = this.props;
-
-        socket.on('message', (data) => {
-            let message;
-            
-            if (data.socketId === socketId){
-                message = {
-                    message: data.message,
-                    isMine: true
+        const { socket, socketId, addMessage, youAre, surrender, socketEventsIsCreated, invertSocketStatus } = this.props;
+        if (!socketEventsIsCreated) {
+            socket.on('message', (data) => {
+                let message;
+                
+                if (data.socketId === socketId){
+                    message = {
+                        message: data.message,
+                        isMine: true
+                    }
+                } else {
+                    message = {
+                        message: data.message,
+                        isMine: false
+                    }
                 }
-            } else {
-                message = {
-                    message: data.message,
-                    isMine: false
-                }
-            }
+    
+                addMessage(message);
+            });
 
-            addMessage(message);
-        });
+            socket.on('surrender', (senderId) => {
+                surrender({socketId: senderId, youAre});
+            });
+
+            invertSocketStatus();
+        }
 
         this.scrollToBottom();
     }

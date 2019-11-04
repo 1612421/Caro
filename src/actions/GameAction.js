@@ -1,16 +1,5 @@
 const GameAction = {
-    createNewGame: () => ({
-        type: 'NEW_GAME',
-        payload: {
-            squares: Array(400).fill(null),
-            xIsNext: true,
-            stepNumber: 0,
-            history: [],
-            squaresWinner: [],
-            haveWinner: false,
-            oldSquaresWinner: []
-        }
-    }),
+    createNewGame: () => ({type: 'NEW_GAME'}),
 
     clickSquare: (i) => ({
         type: 'CLICK_SQUARE',
@@ -22,7 +11,8 @@ const GameAction = {
         payload: i
     }),
 
-    sort: () => ({ type: 'SORT' })
+    sort: () => ({ type: 'SORT' }),
+    surrender: (data) => ({type: 'SURRENDER', payload: data}) 
 };
 
 export default GameAction;

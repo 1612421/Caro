@@ -1,14 +1,22 @@
 import React from 'react';
 
 const Status = (props) => {
-    const {xIsNext, haveWinner} = props;
+    const {xIsNext, haveWinner, youAre } = props;
     const effect = haveWinner? 'bounce' : '';
     let status;
 
     if (haveWinner){
-        status = `Winner is: ${xIsNext? 'o' : 'x'}`;
+        if ((youAre === 'x' && !xIsNext) || (youAre === 'o' && xIsNext)) {
+            status = 'You win';
+        } else {
+            status = 'You lose';
+        }
     }else{
         status = `Next player is: ${xIsNext? 'x' : 'o'}`;
+
+        if ((youAre === 'x' && xIsNext) || (youAre === 'o' && !xIsNext)) {
+            status += ' (you)';
+        }
     }
 
     return (  

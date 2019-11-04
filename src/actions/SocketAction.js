@@ -1,3 +1,5 @@
+import GameAction from './GameAction';
+
 const SocketAction = {
     updateSocketId: (socketId) => ({ 
         type: 'UPDATE_SOCKET_ID', 
@@ -7,11 +9,17 @@ const SocketAction = {
     }),
 
     invertFindingEnemyStatus: () => ({type: 'INVERT_FINDING_ENEMY_STATUS'}),
-    leaveRoom: () => ({type: 'LEAVE_ROOM'}),
+    leaveRoom: () => (dispatch) => {
+        dispatch(GameAction.createNewGame());
+        dispatch({type: 'LEAVE_ROOM'});
+    },
+
     startGame: (data) => ({
         type: 'JOIN_ROOM',
         payload: data
-    })
+    }),
+
+    invertSocketStatus: () => ({type: 'INVERT_SOCKET_STATUS'})
 };
 
 export default SocketAction;

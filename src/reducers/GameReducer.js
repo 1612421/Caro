@@ -464,10 +464,7 @@ function sort(state){
 const GameReducer = (state = initialState, action) => {
     switch (action.type){
         case 'NEW_GAME':
-            return {
-                ...state,
-                ...action.payload
-            };
+            return initialState;
         case 'CLICK_SQUARE':
             return {
                 ...state,
@@ -483,6 +480,27 @@ const GameReducer = (state = initialState, action) => {
                 ...state,
                 ...sort(state)
             };
+        case 'SURRENDER': {
+            let temp;
+
+            if (action.payload.itsMine) {
+                if (action.payload.youAre === 'x') {
+                    temp = true;
+                } else {
+                    temp = false;
+                }
+            } else if (action.payload.youAre === 'x') {
+                temp = false;
+            } else {
+                temp = true;
+            }
+
+            return {
+                ...state,
+                haveWinner: true,
+                xIsNext: temp
+            }
+        }
         default:
             return state;
     }

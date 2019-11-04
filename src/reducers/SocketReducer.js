@@ -1,10 +1,12 @@
 const initialState = {
+    socketEventsIsCreated: false,
     isFindingEnemy: false,
     socketId: null,
     textOfFindEnemyBtn: 'Find enemy',
     enemyUsername: null,
     enemyAvatar: null,
-    room: null
+    room: null,
+    youAre: null
 }
 
 const SocketReducer = (state = initialState, action) => {
@@ -31,16 +33,20 @@ const SocketReducer = (state = initialState, action) => {
                 enemyUsername: action.payload.username,
                 enemyAvatar: action.payload.avatar,
                 socketId: action.payload.socketId,
-                room: action.payload.room
+                room: action.payload.room,
+                youAre: action.payload.youAre
             }    
-
+        
         case 'LEAVE_ROOM':
             return {
+                ...initialState,
+                socketEventsIsCreated: state.socketEventsIsCreated
+            }
+
+        case 'INVERT_SOCKET_STATUS':
+            return {
                 ...state,
-                enemyUsername: null,
-                enemyAvatar: null,
-                room: null,
-                socketId: null
+                socketEventsIsCreated: !state.socketEventsIsCreated
             }
         default:
             return state;
