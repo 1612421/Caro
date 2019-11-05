@@ -14,7 +14,9 @@ const mapStateToProps = (state) => {
         enemyUsername: state.SocketReducer.enemyUsername,
         socketId: state.SocketReducer.socketId,
         youAre: state.SocketReducer.youAre,
-        socketEventsIsCreated: state.SocketReducer.socketEventsIsCreated
+        socketEventsIsCreated: state.SocketReducer.socketEventsIsCreated,
+        isBusy: state.SocketReducer.isBusy,
+        haveWinner: state.GameReducer.haveWinner
     }
 }
 
@@ -24,7 +26,11 @@ const mapDispatchToProps = (dispatch) => ({
     invertPlayingGameStatus: () => dispatch(SocketAction.invertPlayingGameStatus()),
     invertFindingEnemyStatus: () => dispatch(SocketAction.invertFindingEnemyStatus()),
     surrender: (data) => dispatch(GameAction.surrender(data)),
-    invertSocketStatus: () => dispatch(SocketAction.invertSocketStatus())
+    invertSocketStatus: () => dispatch(SocketAction.invertSocketStatus()),
+    setDrawnGame: () => dispatch(GameAction.setDrawnGame()),
+    invertBusyStatus: () => dispatch(SocketAction.invertBusyStatus()),
+    createNewGameOnline: (youAre) => dispatch(GameAction.createNewGameOnline(youAre)),
+    undoPreAction: () => dispatch(GameAction.undoPreAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatBox);

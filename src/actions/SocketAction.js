@@ -19,7 +19,8 @@ const SocketAction = {
         payload: data
     }),
 
-    invertSocketStatus: () => ({type: 'INVERT_SOCKET_STATUS'})
+    invertSocketStatus: () => ({type: 'INVERT_SOCKET_STATUS'}),
+    invertBusyStatus: () => ({type: 'INVERT_BUSY_STATUS'})
 };
 
 export default SocketAction;

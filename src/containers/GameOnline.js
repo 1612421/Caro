@@ -5,7 +5,8 @@ import GameOnline from '../components/GameOnline';
 
 const mapStateToProps = (state) => {
     return {
-        socketId: state.SocketReducer.socketId
+        socketId: state.SocketReducer.socketId,
+        isAuthenticated: state.UserReducer.isAuthenticated
     };
 }
 

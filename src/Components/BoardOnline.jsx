@@ -14,9 +14,9 @@ class Board extends Component {
     }
 
     clickSquare = (i) => {
-        const { socket, socketId, haveWinner, xIsNext, youAre } = this.props;
+        const { socket, socketId, haveWinner, xIsNext, youAre, isBusy } = this.props;
 
-        if (!socketId || haveWinner
+        if (!socketId || haveWinner || isBusy
             || (youAre === 'x' && !xIsNext)
             || (youAre === 'o' && xIsNext)) {
             return;

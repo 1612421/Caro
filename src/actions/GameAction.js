@@ -12,7 +12,10 @@ const GameAction = {
     }),
 
     sort: () => ({ type: 'SORT' }),
-    surrender: (data) => ({type: 'SURRENDER', payload: data}) 
+    surrender: (data) => ({type: 'SURRENDER', payload: data}),
+    setDrawnGame: () => ({type: 'DRAWN'}),
+    createNewGameOnline: (youAre) => ({type: 'NEW_GAME_ONLINE', payload: youAre}),
+    undoPreAction: () => ({type: 'UNDO'})
 };
 
 export default GameAction;

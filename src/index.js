@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import Store from './store';
 import Root from './containers/Root';
 
+// eslint-disable-next-line import/imports-first
+import 'react-toastify/dist/ReactToastify.css';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(

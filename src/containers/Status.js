@@ -5,7 +5,8 @@ const mapStateToProps = (state) => {
     return {
         haveWinner: state.GameReducer.haveWinner,
         xIsNext: state.GameReducer.xIsNext,
-        youAre: state.SocketReducer.youAre
+        youAre: state.SocketReducer.youAre,
+        isDrawn: state.GameReducer.isDrawn
     };
 }
 

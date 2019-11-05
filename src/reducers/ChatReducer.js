@@ -1,5 +1,5 @@
 const initialState = {
-    shouldShowChatBox: true,
+    shouldShowChatBox: false,
     messages: []
 }
 

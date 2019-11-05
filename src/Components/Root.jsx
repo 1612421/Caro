@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Switch, Route} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import history from '../history';
 
 import Login from '../containers/Login';
@@ -13,6 +14,7 @@ const Root = (props) => {
     const { isAuthenticated, account, username, email, logout, avatar} = props;
     return (
         <>
+            <ToastContainer/>
             <NavBar isAuthenticated={isAuthenticated}
                     account={account}
                     username={username}

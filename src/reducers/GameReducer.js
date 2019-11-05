@@ -5,8 +5,9 @@ const initialState = {
     history: [],
     squaresWinner: [],
     haveWinner: false,
-    content: 'Increment',
-    oldSquaresWinner: []
+    content: 'Decrement',
+    oldSquaresWinner: [],
+    isDrawn: false
 };
 
 // Kiểm tra hàng ngang
@@ -461,6 +462,21 @@ function sort(state){
     });
 }
 
+function createNewGameOnline(youAre){
+    return {
+        ...initialState,
+        xIsNext: youAre !== 'x'
+    }
+}
+
+function undoPreAction(state) {
+    if (state.stepNumber > 1) {
+        return jumpToStepNumber(state, state.stepNumber - 2);
+    }
+
+    return createNewGameOnline();
+}
+
 const GameReducer = (state = initialState, action) => {
     switch (action.type){
         case 'NEW_GAME':
@@ -501,6 +517,24 @@ const GameReducer = (state = initialState, action) => {
                 xIsNext: temp
             }
         }
+
+        case 'DRAWN':
+            return {
+                ...state,
+                haveWinner: true,
+                isDrawn: true
+            }
+
+        case 'NEW_GAME_ONLINE': 
+            return {
+                
+            }
+        
+        case 'UNDO': 
+            return {
+                ...state,
+                ...undoPreAction(state)
+            }
         default:
             return state;
     }

@@ -6,7 +6,8 @@ const initialState = {
     enemyUsername: null,
     enemyAvatar: null,
     room: null,
-    youAre: null
+    youAre: null,
+    isBusy: false,
 }
 
 const SocketReducer = (state = initialState, action) => {
@@ -47,6 +48,12 @@ const SocketReducer = (state = initialState, action) => {
             return {
                 ...state,
                 socketEventsIsCreated: !state.socketEventsIsCreated
+            }
+
+        case 'INVERT_BUSY_STATUS':
+            return {
+                ...state,
+                isBusy: !state.isBusy
             }
         default:
             return state;

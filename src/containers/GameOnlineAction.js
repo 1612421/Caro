@@ -8,13 +8,17 @@ const mapStateToProps = (state) => {
         socketId: state.SocketReducer.socketId,
         textOfFindEnemyBtn: state.SocketReducer.textOfFindEnemyBtn,
         myUsername: state.UserReducer.username,
-        myAvatar: state.UserReducer.avatar
+        myAvatar: state.UserReducer.avatar,
+        haveWinner: state.GameReducer.haveWinner,
+        isBusy: state.SocketReducer.isBusy,
+        stepNumber: state.GameReducer.stepNumber
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     invertFindingEnemyStatus: () => dispatch(SocketAction.invertFindingEnemyStatus()),
-    leaveRoom: () => dispatch(SocketAction.leaveRoom())
+    leaveRoom: () => dispatch(SocketAction.leaveRoom()),
+    invertBusyStatus: () => dispatch(SocketAction.invertBusyStatus())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameOnlineAction);

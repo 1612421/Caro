@@ -1,24 +1,12 @@
 import React from 'react';
+import GameOnlineAction from '../containers/GameOnlineAction';
 
 const Moves = (props) => {
-    const {history, stepNumber, content, ...other} = props;
+    const {history, stepNumber, socket } = props;
     return ( 
         <div className="game-info__moves overflow-auto">
             <ol className="list-moves list-unstyled">
-                <li>
-                    <button type="button" className="btn btn-danger btn-block btn-text-big"
-                            onClick={() => other.createNewGame()}>
-                        New game
-                    </button>
-                </li>
-                <li>
-                    <button type="button" className="btn btn-danger btn-block btn-text-big"
-                            onClick={() => other.sort()}>
-                        {
-                            content
-                        }
-                    </button>
-                </li>
+                <GameOnlineAction socket={socket}/>
                 {
                     history.map((item)=>{
                         const col = item.clickIndex % 20;
@@ -30,7 +18,7 @@ const Moves = (props) => {
                             <li key={item.stepNumber}>
                                 <button type="button" 
                                         className={`btn ${btnHighlight} btn-block btn-custom`}
-                                        onClick={() => other.onClick(item.stepNumber)}>
+                                        onClick={() => {}}>
                                     {desc}
                                 </button>
                             </li>

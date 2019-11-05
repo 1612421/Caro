@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
         socketId: state.SocketReducer.socketId,
         haveWinner: state.GameReducer.haveWinner,
         xIsNext: state.GameReducer.xIsNext,
-        youAre: state.SocketReducer.youAre
+        youAre: state.SocketReducer.youAre,
+        isBusy: state.SocketReducer.isBusy
     };
 }
 
