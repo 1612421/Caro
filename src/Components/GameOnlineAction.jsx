@@ -6,6 +6,11 @@ class GameOnlineAction extends Component {
     findEnemy = () => {
         const { socket, invertFindingEnemyStatus, myUsername, myAvatar, isFindingEnemy } = this.props;
 
+        if (socket.disconnected){
+            toast.error('Disconnected to server');
+            return;
+        }
+
         if (isFindingEnemy) {
             socket.emit('leave lobby');
         } else {

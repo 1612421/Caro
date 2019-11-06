@@ -6,7 +6,7 @@ const initialState = {
     enemyUsername: null,
     enemyAvatar: null,
     room: null,
-    youAre: null,
+    youAre: 'x',
     isBusy: false,
 }
 

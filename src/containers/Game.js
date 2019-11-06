@@ -2,26 +2,8 @@ import { connect } from 'react-redux';
 import GameAction from '../actions/GameAction';
 import Game from '../components/Game';
 
-const mapStateToProps = (state) => {
-    return {...state.GameReducer};
-}
-
 const mapDispatchToProps = (dispatch) => ({
-    createNewGame: () => {
-        dispatch(GameAction.createNewGame());
-    },
-
-    clickSquare: (i) => {
-        dispatch(GameAction.clickSquare(i));
-    },
-
-    jumToStepNumber: (i) => {
-        dispatch(GameAction.jumpToStepNumber(i));
-    },
-
-    sort: () => {
-        dispatch(GameAction.sort());
-    }
+    invertPlayingOfflineStatus: () => dispatch(GameAction.invertPlayingOfflineStatus())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(null ,mapDispatchToProps)(Game);

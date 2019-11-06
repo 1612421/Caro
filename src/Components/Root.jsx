@@ -9,6 +9,7 @@ import GameOnline from '../containers/GameOnline';
 import NavBar from './NavBar';
 import Home from './Home';
 import Profile from '../containers/Profile';
+import Game from '../containers/Game';
 
 const Root = (props) => {
     const { isAuthenticated, account, username, email, logout, avatar} = props;
@@ -32,8 +33,11 @@ const Root = (props) => {
                     <Route exact path='/user/profile'>
                         <Profile/>    
                     </Route>
-                    <Route exact path="/game">
+                    <Route exact path="/game-online">
                         <GameOnline/>
+                    </Route>
+                    <Route exact path="/game-offline">
+                        <Game/>
                     </Route>
                     <Route exact path="/">
                         <Home isAuthenticated={isAuthenticated}/>

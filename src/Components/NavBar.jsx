@@ -79,7 +79,10 @@ class NavBar extends Component {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href="/game">Game</a>
+                        <a className="nav-link" href="/game-online">Game Online</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="/game-offline">Game Offline</a>
                     </li>
                 </ul>
                 {this.renderElement()}

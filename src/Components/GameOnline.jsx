@@ -21,14 +21,13 @@ class Game extends Component {
         }
 
         socket.open();
-
         socket.on('game start', (data) => {
             startGame(data);
             toast.success('Find out enemy. Game start!');
         });
         socket.on('game end', (senderID) => {
             const socketId = this.getSocketId();
-
+            
             if (socketId !== senderID) {
                 toast('Enemy has left the game');
             }

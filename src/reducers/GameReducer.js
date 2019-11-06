@@ -7,7 +7,8 @@ const initialState = {
     haveWinner: false,
     content: 'Decrement',
     oldSquaresWinner: [],
-    isDrawn: false
+    isDrawn: false,
+    isPlayingOffline: false,
 };
 
 // Kiểm tra hàng ngang
@@ -35,6 +36,7 @@ function checkRow(state, indexClick){
 
         if (Math.floor((i - 1) / 20) !== currentRow){
             head1 = true;
+            winner.push(i);
             break;
         }
 
@@ -63,6 +65,7 @@ function checkRow(state, indexClick){
 
         if (Math.floor((i + 1) / 20) !== currentRow){
             head2 = true;
+            winner.push(i);
             break;
         }
 
@@ -111,6 +114,7 @@ function checkColumn(state, indexClick){
 
         if (i - 20 < 0){
             head1 = true;
+            winner.push(i);
             break;
         }
 
@@ -140,6 +144,7 @@ function checkColumn(state, indexClick){
 
         if (i + 20 > 399){
             head2 = true;
+            winner.push(i);
             break;
         }
 
@@ -188,6 +193,7 @@ function checkSlash(state, indexClick){
 
         if (i - 21 < 0){
             head1 = true;
+            winner.push(i);
             break;
         }
 
@@ -217,6 +223,7 @@ function checkSlash(state, indexClick){
 
         if (i + 21 > 399){
             head2 = true;
+            winner.push(i);
             break;
         }
 
@@ -265,6 +272,7 @@ function checkBackSlash(state, indexClick){
 
         if (i - 19 < 0){
             head1 = true;
+            winner.push(i);
             break;
         }
 
@@ -294,6 +302,7 @@ function checkBackSlash(state, indexClick){
 
         if (i + 19 > 399){
             head2 = true;
+            winner.push(i);
             break;
         }
 
@@ -477,6 +486,17 @@ function undoPreAction(state) {
     return createNewGameOnline();
 }
 
+function playByBot(state) {
+    const { squares } = state;
+    let clickIndex = Math.floor(Math.random() * 400)
+
+    while (squares[clickIndex]) {
+        clickIndex = Math.floor(Math.random() * 400);
+    }
+
+    return clickSquare(state, clickIndex);
+}
+
 const GameReducer = (state = initialState, action) => {
     switch (action.type){
         case 'NEW_GAME':
@@ -527,13 +547,25 @@ const GameReducer = (state = initialState, action) => {
 
         case 'NEW_GAME_ONLINE': 
             return {
-                
+                ...state,
+                ...createNewGameOnline(state, action.payload.youAre)
             }
         
         case 'UNDO': 
             return {
                 ...state,
                 ...undoPreAction(state)
+            }
+
+        case 'INVERT_PLAYING_OFFLINE_STATUS': 
+            return {
+                ...state,
+                isPlayingOffline: !state.isPlayingOffline
+            }
+        case 'BOT_PLAY': 
+            return {
+                ...state,
+                ...playByBot(state)
             }
         default:
             return state;
